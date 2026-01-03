@@ -12,8 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
     - name: Setup Java
       uses: actions/setup-java@v3
@@ -24,7 +23,7 @@ jobs:
     - name: Build JAR
       run: mvn clean package
 
-    - name: Create GitHub Release & Upload JAR
+    - name: Create Release and Upload JAR
       uses: softprops/action-gh-release@v1
       with:
         tag_name: v1.0
