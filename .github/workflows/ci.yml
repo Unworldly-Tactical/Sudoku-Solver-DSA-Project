@@ -3,8 +3,6 @@ name: Java CI Pipeline
 on:
   push:
     branches: [ "main", "master" ]
-  pull_request:
-    branches: [ "main", "master" ]
 
 jobs:
   build:
@@ -19,8 +17,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Build Project
+    - name: Build JAR
       run: mvn package
 
-    - name: Run Tests
-      run: mvn test
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: sudoku-solver
+        path: target/*.jar
