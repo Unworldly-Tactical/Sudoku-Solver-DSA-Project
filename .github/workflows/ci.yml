@@ -1,15 +1,19 @@
-name: Java CI Pipeline
+name: Java CI + Auto Release
 
 on:
   push:
     branches: [ "main", "master" ]
 
+permissions:
+  contents: write
+
 jobs:
-  build:
+  build-release:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
     - name: Setup Java
       uses: actions/setup-java@v3
@@ -18,10 +22,13 @@ jobs:
         distribution: 'temurin'
 
     - name: Build JAR
-      run: mvn package
+      run: mvn clean package
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+    - name: Create GitHub Release & Upload JAR
+      uses: softprops/action-gh-release@v1
       with:
-        name: sudoku-solver
-        path: target/*.jar
+        tag_name: v1.0
+        name: Sudoku Solver v1.0
+        files: target/*.jar
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
